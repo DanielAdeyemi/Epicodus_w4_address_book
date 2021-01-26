@@ -51,7 +51,15 @@ function displayContactDetails(addressBookToDisplay) {
     htmlForContactInfo += "<li id=" + contact.id + ">" + contact.firstName + " " + contact.lastName + "</li>";
   });
 }
+
+function attachEventListeners() {
+  $("ul#contacts").on("click", "li", function() {
+
+  })
+};
+
 $(document).ready(function() {
+  attachEventListeners();
   $("form#new-contact").submit(function(event) {
     event.preventDefault();
     const inputtedFirstName = $("input#new-first-name").val();
