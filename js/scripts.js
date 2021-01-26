@@ -1,4 +1,4 @@
-// Bussiness logic for AddressBook
+// Business Logic for AddressBook ---------
 function AddressBook() {
   this.contacts = {};
   this.currentId = 0;
@@ -15,7 +15,7 @@ AddressBook.prototype.assignId = function() {
 }
 
 AddressBook.prototype.findContact = function(id) {
-  if (this.contacts[id] !== undefined) {
+  if (this.contacts[id] != undefined) {
     return this.contacts[id];
   }
   return false;
@@ -29,7 +29,7 @@ AddressBook.prototype.deleteContact = function(id) {
   return true;
 }
 
-// Bussiness logic for Contacts
+// Business Logic for Contacts ---------
 function Contact(firstName, lastName, phoneNumber) {
   this.firstName = firstName;
   this.lastName = lastName;
@@ -40,30 +40,31 @@ Contact.prototype.fullName = function() {
   return this.firstName + " " + this.lastName;
 }
 
-// User interface logic
+// User Interface Logic ---------
 let addressBook = new AddressBook();
 
 function displayContactDetails(addressBookToDisplay) {
-  let contactList = $("ul#contacts")
+  let contactsList = $("ul#contacts");
   let htmlForContactInfo = "";
   Object.keys(addressBookToDisplay.contacts).forEach(function(key) {
     const contact = addressBookToDisplay.findContact(key);
     htmlForContactInfo += "<li id=" + contact.id + ">" + contact.firstName + " " + contact.lastName + "</li>";
   });
-}
+  contactsList.html(htmlForContactInfo);
+};
 
-showContact(contactId) {
+function showContact(contactId) {
   const contact = addressBook.findContact(contactId);
   $("#show-contact").show();
   $(".first-name").html(contact.firstName);
-  $(".last-name").html(contact.LastName);
+  $(".last-name").html(contact.lastName);
   $(".phone-number").html(contact.phoneNumber);
   let buttons = $("#buttons");
   buttons.empty();
-  buttons.append("<button class='deleteButton' id=" + contact.id + ">Delete</button>");
+  buttons.append("<button class='deleteButton' id=" + +contact.id + ">Delete</button>");
 }
 
-function attachEventListeners() {
+function attachContactListeners() {
   $("ul#contacts").on("click", "li", function() {
     showContact(this.id);
   });
@@ -75,13 +76,16 @@ function attachEventListeners() {
 };
 
 $(document).ready(function() {
-  attachEventListeners();
+  attachContactListeners();
   $("form#new-contact").submit(function(event) {
     event.preventDefault();
-    const inputtedFirstName = $("input#new-first-name").val();
-    const inputtedLastName = $("input#new-last-name").val();
-    const inputtedPhoneNumber = $("input#new-phone-number").val();
-    let newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber);
+    var inputtedFirstName = $("input#new-first-name").val();
+    var inputtedLastName = $("input#new-last-name").val();
+    var inputtedPhoneNumber = $("input#new-phone-number").val();
+    $("input#new-first-name").val("");
+    $("input#new-last-name").val("");
+    $("input#new-phone-number").val("");
+    var newContact = new Contact(inputtedFirstName, inputtedLastName, inputtedPhoneNumber);
     addressBook.addContact(newContact);
     displayContactDetails(addressBook);
   });
